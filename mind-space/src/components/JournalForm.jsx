@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {v4 as uuidv4} from 'uuid';
 
-const JournalForm = ({setJournalEntries,journalEntries}) => {
+const JournalForm = ({setJournalEntries,journalEntries,editItem,setFormCompleted,setEditItem}) => {
     const today = new Date().toISOString().split('T')[0];
     const [date, setDate] = useState(today);
     const [title, setTitle] = useState("");
@@ -23,18 +23,38 @@ const JournalForm = ({setJournalEntries,journalEntries}) => {
             alert("Please fill in all fields.");
             return;
         }
-         if (journalEntries.some(entry => entry.title === title && entry.date === date)) {
+         if (editItem===null && journalEntries.some(entry => entry.title === title && entry.date === date)) {
             alert("An entry with the same title and date already exists.");
             return;
         }
+        setEditItem(null);
         setShowForm(false);
         setTitle(title.trim());
         setEntry(entry.trim());
+        if(editItem=== null)
         alert(`Journal Entry Submitted:\nTitle: ${title}\nDate: ${date}`);
-        const newJournalEntry = { title, date, entry,mood,id: uuidv4() };
-        console.log("New Journal Entry:", newJournalEntry);
-        setJournalEntries([...journalEntries, newJournalEntry]);
-        console.log("Journal Entries:", journalEntries);
+        else
+        alert("Journal edited successfully");
+        setFormCompleted(true);
+        if(editItem!== null) {
+            const updatedEntries = journalEntries.map(journalEntry => 
+                journalEntry.id === editItem.id ? {...journalEntry, title, date, entry, mood} : journalEntry
+            );
+            setJournalEntries(updatedEntries);
+            reset();
+            return;
+        }
+        else{
+            const newEntry = {
+                id: uuidv4(),   
+                title,
+                date,
+                entry,
+                mood
+            };
+            setJournalEntries([...journalEntries, newEntry]);
+        }
+         
         reset();
     };
 
@@ -46,9 +66,35 @@ const JournalForm = ({setJournalEntries,journalEntries}) => {
         setMood("");
     }
 
+    useEffect(() => {
+         
+        if(editItem!==null) {
+         
+        setDate(editItem.date);
+        setTitle(editItem.title);
+        setEntry(editItem.entry);
+        setMood(editItem.mood);
+        setShowForm(true);
+        setFormCompleted(false);
+    }
+    },[editItem]);
+
+    const handleCancel = () => {
+    setFormCompleted(true);
+    setEditItem(null);
+       setShowForm(false);
+       reset()
+    }
+
   return (
     <div>
-        {!showForm ? <button className='button' onClick={()=>{setShowForm(true)}}>Add new Journal</button> 
+        {!showForm ? 
+        <button className='button' 
+            onClick={()=>{
+            setShowForm(true),
+            setFormCompleted(false)
+        }}>
+        Add new Journal</button> 
         :
         <form className='form' onSubmit={submitHandler}>
             <h2>Journal Entry</h2>
@@ -73,12 +119,12 @@ const JournalForm = ({setJournalEntries,journalEntries}) => {
                 <option value="">select mood</option>
                 <option value="😊">Happy😊</option>
                 <option value="😞">Sad😞</option>
-                <option value="😐">Neutral😐</option>
+                <option value="😌">Neutral😌</option>
                 <option value="😠">Angry😠</option>
             </select>
             <br />
             <button className='button'  type='submit'>submit</button>
-            <button className='button' style={{marginRight:"30%"}} onClick={()=>{setShowForm(false);reset()}}>cancel</button>
+            <button className='button' style={{marginRight:"30%"}} type='button' onClick={handleCancel}>cancel</button>
         </form>
         }
     </div>
