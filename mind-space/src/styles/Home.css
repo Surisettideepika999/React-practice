@@ -1,0 +1,10 @@
+.container {
+    padding: 20px;
+    color: darkcyan;
+    text-align: center;
+}
+
+.greeting {
+    font-size: 24px;
+    color: #333;
+}
