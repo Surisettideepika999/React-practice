@@ -5,9 +5,10 @@
     /* margin: 16px 0; */
     background-color: #f9f9f9;
     margin-left: 25%;
-    margin-right: 25%;
+    margin-right: 45%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: rgb(112, 187, 207);
+    margin-top: not-allowed;
 }
 
 label{
@@ -69,4 +70,16 @@ select {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.icon{
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding-bottom: 5px;
+}
+
+.journal-icons{
+    display: flex;
+    justify-content: flex-end;
 }

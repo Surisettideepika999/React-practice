@@ -21,11 +21,13 @@ const JournalCard = ({journalEntry,deleteEntry,editEntry}) => {
   },[journalEntry.mood]);
   return (
     <div className='journal-card'>
+      <div className='journal-icons'>
+      <button className='icon' onClick={()=>deleteEntry(journalEntry.id)}>🗑</button>
+        <button className='icon'  onClick={()=>editEntry(journalEntry.id)}>✎</button>
+      </div>
         <h3 style={{color:moodColor}}>{journalEntry.title} {journalEntry.mood}</h3>
         <p style={{color:"white"}}><strong>Date:</strong> {journalEntry.date}</p>
         <p style={{color:"white"}}>{journalEntry.entry}</p>
-        <button style={{marginLeft:'85%'}} className='button' onClick={()=>deleteEntry(journalEntry.id)}>Delete</button>
-        <button style={{marginLeft:'85%'}} className='button' onClick={()=>editEntry(journalEntry.id)}>Edit</button>
     </div>
   )
 }

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import Quotes from './Quotes';
-import MoodTracker from './MoodTracker';
 import '../styles/Home.css';
 
 const Home = () => {
@@ -19,7 +18,6 @@ const Home = () => {
       <p>{greeting}, Deepika 🌸 </p>
         <p>Today is {today}</p>
       <Quotes />
-      <MoodTracker date={today}/>
     </div>
   )
 }
